@@ -1,9 +1,9 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import './App.css';
 
-import Header from './components/Header';
-import Products from './components/Products';
-import Cart from './components/Cart';
+import Header from './components/layout/Header';
+import Products from './components/pages/Products';
+import Cart from './components/pages/Cart';
 
 import ProductState from './context/ProductState';
 
