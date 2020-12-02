@@ -1,16 +1,14 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-function Cart({ cart, setCart }) {
-  const removeProduct = (productToRemove) => {
-    setCart(cart.filter((prod) => prod !== productToRemove));
-  };
+import ProductContext from '../context/productContext';
+
+function Cart() {
+  const productContext = useContext(ProductContext);
+
+  const { cart, removeProduct, clearCart } = productContext;
 
   const getTotalSum = () => {
     return cart.map((prod) => prod.price).reduce((acc, curr) => acc + curr);
-  };
-
-  const clearCart = () => {
-    setCart([]);
   };
 
   return (

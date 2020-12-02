@@ -1,6 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
-function Products({ products, addToCart }) {
+import ProductContext from '../context/productContext';
+
+function Products() {
+  const productContext = useContext(ProductContext);
+
+  const { products, addToCart } = productContext;
+
   return (
     <>
       <h1>Products</h1>

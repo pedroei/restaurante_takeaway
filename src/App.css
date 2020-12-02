@@ -50,6 +50,14 @@
   padding: 30px;
 }
 
+.btnLink {
+  font-size: 25px;
+  padding: 10px;
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
 button {
   font-size: 20px;
   padding: 10px;
