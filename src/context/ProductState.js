@@ -9,6 +9,7 @@ const ProductState = (props) => {
   const initialState = {
     products: productsList,
     cart: [],
+    total: 0,
     error: null,
   };
 
@@ -20,6 +21,7 @@ const ProductState = (props) => {
       type: 'ADD_TO_CART',
       payload: product,
     });
+    totalToPay();
   };
 
   //Remove from cart
@@ -28,12 +30,21 @@ const ProductState = (props) => {
       type: 'REMOVE_FROM_CART',
       payload: productToRemove,
     });
+    totalToPay();
   };
 
   //Clear cart
   const clearCart = () => {
     dispatch({
       type: 'CLEAR_CART',
+    });
+    totalToPay();
+  };
+
+  //Total to pay
+  const totalToPay = () => {
+    dispatch({
+      type: 'TOTAL_PAY',
     });
   };
 
@@ -42,10 +53,12 @@ const ProductState = (props) => {
       value={{
         products: state.products,
         cart: state.cart,
+        total: state.total,
         error: state.error,
         addToCart,
         removeProduct,
         clearCart,
+        totalToPay,
       }}
     >
       {props.children}

@@ -7,16 +7,12 @@ import ProductContext from '../../context/productContext';
 function Cart() {
   const productContext = useContext(ProductContext);
 
-  const { cart, removeProduct, clearCart } = productContext;
-
-  const getTotalSum = () => {
-    return cart.map((prod) => prod.price).reduce((acc, curr) => acc + curr);
-  };
+  const { cart, total, removeProduct, clearCart } = productContext;
 
   return (
     <div className="centerClass">
       <h1>Carrinho de compras</h1>
-      {cart.length > 0 && <h3>Total: {getTotalSum()}€</h3>}
+      {cart.length > 0 && <h3>Total: {total}€</h3>}
       {cart.length > 0 && (
         <div>
           <button>

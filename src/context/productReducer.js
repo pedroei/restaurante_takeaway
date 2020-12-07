@@ -15,6 +15,13 @@ const reducer = (state, action) => {
         ...state,
         cart: [],
       };
+    case 'TOTAL_PAY':
+      return {
+        ...state,
+        total: state.cart
+          .map((prod) => prod.price)
+          .reduce((acc, curr) => acc + curr),
+      };
     default:
       return state;
   }
