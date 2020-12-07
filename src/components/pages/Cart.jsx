@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Product from '../Product';
+import { Link } from 'react-router-dom';
 
 import ProductContext from '../../context/productContext';
 
@@ -13,10 +14,17 @@ function Cart() {
   };
 
   return (
-    <>
+    <div className="centerClass">
       <h1>Carrinho de compras</h1>
-      {cart.length > 0 && <div>Total: {getTotalSum()}€</div>}
-      {cart.length > 0 && <button onClick={clearCart}>Clear Cart</button>}
+      {cart.length > 0 && <h3>Total: {getTotalSum()}€</h3>}
+      {cart.length > 0 && (
+        <div>
+          <button>
+            <Link to="/checkout">Finalizar compra</Link>
+          </button>
+          <button onClick={clearCart}>Clear Cart</button>
+        </div>
+      )}
       <div className="products">
         {cart.map((product, index) => (
           <Product
@@ -26,7 +34,7 @@ function Cart() {
           />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 

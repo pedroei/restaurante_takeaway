@@ -9,7 +9,7 @@ function Header() {
   const { cart } = productContext;
 
   return (
-    <header>
+    <header className="centerClass">
       <Link className="btnLink" to="/cart">
         Carrinho de compras({cart.length})
       </Link>

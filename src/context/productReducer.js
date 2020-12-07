@@ -1,4 +1,4 @@
-export default (state, action) => {
+const reducer = (state, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
       return {
@@ -19,3 +19,4 @@ export default (state, action) => {
       return state;
   }
 };
+export default reducer;
