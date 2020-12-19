@@ -9,9 +9,9 @@ function Products() {
   const { products, addToCart } = productContext;
 
   return (
-    <div className="centerClass">
-      <h1>Products</h1>
-      <div className="products">
+    <div className="container mb-2">
+      <h1 className="display-3 mb-5 mt-3">Products</h1>
+      <div className="row">
         {products.map((product, index) => (
           <Product key={index} product={product} addToCart={addToCart} />
         ))}

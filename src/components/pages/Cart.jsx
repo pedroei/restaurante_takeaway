@@ -10,18 +10,29 @@ function Cart() {
   const { cart, total, removeProduct, clearCart } = productContext;
 
   return (
-    <div className="centerClass">
-      <h1>Carrinho de compras</h1>
-      {cart.length > 0 && <h3>Total: {total}€</h3>}
+    <div className="container mb-2">
+      <h1 className="display-3 mb-2 mt-3">Carrinho de compras</h1>
       {cart.length > 0 && (
-        <div>
-          <button>
-            <Link to="/checkout">Finalizar compra</Link>
-          </button>
-          <button onClick={clearCart}>Clear Cart</button>
+        <h3 className="display-5">
+          Total: <span className="text-success">{total}€</span>
+        </h3>
+      )}
+      {cart.length > 0 && (
+        <div className="container my-3">
+          <div className="row">
+            <div className="col text-center">
+              <button className="btn btn-warning mr-5" onClick={clearCart}>
+                Clear Cart
+              </button>
+
+              <Link className="btn btn-success" to="/checkout">
+                Finalizar compra
+              </Link>
+            </div>
+          </div>
         </div>
       )}
-      <div className="products">
+      <div className="row">
         {cart.map((product, index) => (
           <Product
             key={index}

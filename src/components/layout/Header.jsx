@@ -9,14 +9,16 @@ function Header() {
   const { cart } = productContext;
 
   return (
-    <header className="centerClass">
-      <Link className="btnLink" to="/cart">
-        Carrinho de compras({cart.length})
-      </Link>
-      <Link className="btnLink" to="/">
-        Produtos
-      </Link>
-    </header>
+    <nav class="navbar navbar-dark bg-primary">
+      <div class="container-fluid">
+        <Link class="navbar-brand" to="/">
+          Home
+        </Link>
+        <Link className="btn btn-outline-light" to="/cart">
+          Carrinho de compras ({cart.length})
+        </Link>
+      </div>
+    </nav>
   );
 }
 
