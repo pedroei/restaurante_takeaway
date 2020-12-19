@@ -1,16 +1,51 @@
-import { Link } from 'react-router-dom';
+import { useState } from 'react';
 
-const Checkout = () => {
+const Checkout = (props) => {
+  const [fatura, setFatura] = useState({
+    nome: '',
+    telefone: '',
+    nomeRua: '',
+    numPorta: '',
+    codPostal: '',
+    cidade: '',
+    nif: '',
+    tipoEntrega: 'entregaEmCasa',
+    metodoPagamento: 'dinheiro',
+  });
+
+  const {
+    nome,
+    telefone,
+    nomeRua,
+    numPorta,
+    codPostal,
+    cidade,
+    nif,
+    tipoEntrega,
+  } = fatura;
+
+  const onChange = (e) => {
+    setFatura({ ...fatura, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(fatura);
+    props.history.push('/payment');
+  };
+
   return (
     <div className="container" style={{ marginTop: '50px' }}>
       <h1 style={{ marginBottom: '50px' }}>Informação para entrega</h1>
-      <form className="container">
+      <form className="container" onSubmit={onSubmit}>
         <div className="form-group">
           <label htmlFor="nome">Nome</label>
           <input
             type="text"
             id="nome"
             name="nome"
+            value={nome}
+            onChange={onChange}
             className="form-control"
             placeholder="O seu nome..."
             required
@@ -22,6 +57,8 @@ const Checkout = () => {
             type="number"
             id="telefone"
             name="telefone"
+            value={telefone}
+            onChange={onChange}
             className="form-control"
             placeholder="O seu numero..."
             required
@@ -33,6 +70,8 @@ const Checkout = () => {
             type="text"
             id="nomeRua"
             name="nomeRua"
+            value={nomeRua}
+            onChange={onChange}
             className="form-control"
             placeholder="Nome da rua..."
             required
@@ -44,6 +83,8 @@ const Checkout = () => {
             type="number"
             id="numPorta"
             name="numPorta"
+            value={numPorta}
+            onChange={onChange}
             className="form-control"
             placeholder="Numero da porta..."
             required
@@ -55,6 +96,8 @@ const Checkout = () => {
             type="text"
             id="codPostal"
             name="codPostal"
+            value={codPostal}
+            onChange={onChange}
             className="form-control"
             placeholder="Codigo postal..."
             required
@@ -66,6 +109,8 @@ const Checkout = () => {
             type="text"
             id="cidade"
             name="cidade"
+            value={cidade}
+            onChange={onChange}
             className="form-control"
             placeholder="Cidade"
             required
@@ -77,6 +122,8 @@ const Checkout = () => {
             type="number"
             id="nif"
             name="nif"
+            value={nif}
+            onChange={onChange}
             className="form-control"
             placeholder="Se quiser com numero de contribuinte..."
           />
@@ -85,10 +132,11 @@ const Checkout = () => {
           <input
             className="form-check-input"
             type="radio"
-            name="inlineRadioOptions"
+            name="tipoEntrega"
             id="entregaEmCasa"
             value="entregaEmCasa"
-            defaultChecked
+            checked={tipoEntrega === 'entregaEmCasa'}
+            onChange={onChange}
           />
           <label className="form-check-label" htmlFor="entregaEmCasa">
             Entrega em Casa
@@ -98,22 +146,22 @@ const Checkout = () => {
           <input
             className="form-check-input"
             type="radio"
-            name="inlineRadioOptions"
+            name="tipoEntrega"
             id="entregaNoRestaurante"
             value="entregaNoRestaurante"
+            checked={tipoEntrega === 'entregaNoRestaurante'}
+            onChange={onChange}
           />
           <label className="form-check-label" htmlFor="entregaNoRestaurante">
             Ir buscar ao restaurante
           </label>
         </div>
         <div className="form-group">
-          <Link to="/payment">
-            <input
-              type="submit"
-              value="Continuar para o pagamento"
-              className="btn btn-primary mt-3"
-            />
-          </Link>
+          <input
+            type="submit"
+            value="Continuar para o pagamento"
+            className="btn btn-primary mt-3"
+          />
         </div>
       </form>
     </div>

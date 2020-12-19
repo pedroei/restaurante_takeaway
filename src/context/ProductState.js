@@ -38,7 +38,6 @@ const ProductState = (props) => {
     dispatch({
       type: 'CLEAR_CART',
     });
-    totalToPay();
   };
 
   //Total to pay

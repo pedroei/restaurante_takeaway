@@ -14,13 +14,13 @@ const Payment = () => {
         Total a pagar: <span>{total}€</span>
       </h3>
       <form>
-        <div class="form-group row">
-          <label for="metodoPagamento" class="col-sm-2 col-form-label">
+        <div className="form-group row">
+          <label htmlFor="metodoPagamento" className="col-sm-2 col-form-label">
             Metodo Pagamento
           </label>
-          <div class="col-sm-10">
+          <div className="col-sm-10">
             <select
-              class="custom-select mr-sm-2"
+              className="custom-select mr-sm-2"
               id="metodoPagamento"
               placeholder="Escolha um..."
             >
@@ -31,9 +31,9 @@ const Payment = () => {
           </div>
         </div>
 
-        <div class="form-group row ">
-          <div class="col-sm-10 mt-3">
-            <button type="submit" class="btn btn-primary">
+        <div className="form-group row ">
+          <div className="col-sm-10 mt-3">
+            <button type="button" className="btn btn-primary">
               Confirmar pagamento
             </button>
           </div>
