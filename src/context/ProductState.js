@@ -1,19 +1,33 @@
 import { useReducer } from 'react';
-//import axios from "axios";
+import axios from 'axios';
 import ProductContext from './productContext';
 import productReducer from './productReducer';
 
-import productsList from '../assets/products.json';
+//import productsList from '../assets/products.json';
 
 const ProductState = (props) => {
   const initialState = {
-    products: productsList,
+    products: null,
     cart: [],
     total: 0,
     error: null,
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
+
+  //Get products
+  const getProducts = async () => {
+    try {
+      const res = await axios.get('/api/produtos');
+
+      dispatch({
+        type: 'GET_PRODUCTS',
+        payload: res.data,
+      });
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   //Add to cart
   const addToCart = (product) => {
@@ -54,6 +68,7 @@ const ProductState = (props) => {
         cart: state.cart,
         total: state.total,
         error: state.error,
+        getProducts,
         addToCart,
         removeProduct,
         clearCart,

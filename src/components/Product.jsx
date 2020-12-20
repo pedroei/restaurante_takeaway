@@ -6,7 +6,7 @@ const Product = ({ product, addToCart, removeProduct }) => {
       <div className="card h-100">
         <img
           className="card-img-top img-fluid img-thumbnail"
-          src={product.image}
+          src={'https://my.jasminsoftware.com/api' + product.image}
           alt={product.name}
         />
         <div className="card-body">

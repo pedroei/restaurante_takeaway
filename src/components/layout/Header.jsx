@@ -9,9 +9,9 @@ function Header() {
   const { cart } = productContext;
 
   return (
-    <nav class="navbar navbar-dark bg-primary">
-      <div class="container-fluid">
-        <Link class="navbar-brand" to="/">
+    <nav className="navbar navbar-dark bg-primary">
+      <div className="container-fluid">
+        <Link className="navbar-brand" to="/">
           Home
         </Link>
         <Link className="btn btn-outline-light" to="/cart">
