@@ -8,6 +8,7 @@ const ProductState = (props) => {
     products: null,
     cart: [],
     total: 0,
+    fatura: null,
     error: null,
   };
 
@@ -59,18 +60,37 @@ const ProductState = (props) => {
     });
   };
 
+  //Build fatura
+  const buildFatura = (fatura) => {
+    dispatch({
+      type: 'SET_FATURA',
+      payload: fatura,
+    });
+  };
+
+  //Change Payment
+  const changePaymentMethod = (payment) => {
+    dispatch({
+      type: 'CHANGE_PAYMENT',
+      payload: payment,
+    });
+  };
+
   return (
     <ProductContext.Provider
       value={{
         products: state.products,
         cart: state.cart,
         total: state.total,
+        fatura: state.fatura,
         error: state.error,
         getProducts,
         addToCart,
         removeProduct,
         clearCart,
         totalToPay,
+        buildFatura,
+        changePaymentMethod,
       }}
     >
       {props.children}

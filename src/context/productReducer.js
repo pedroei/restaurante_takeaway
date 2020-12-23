@@ -27,6 +27,16 @@ const reducer = (state, action) => {
           .map((prod) => prod.price)
           .reduce((acc, curr) => acc + curr),
       };
+    case 'SET_FATURA':
+      return {
+        ...state,
+        fatura: action.payload,
+      };
+    case 'CHANGE_PAYMENT':
+      return {
+        ...state,
+        fatura: { ...state.fatura, metodoPagamento: action.payload },
+      };
     default:
       return state;
   }

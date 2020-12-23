@@ -5,7 +5,16 @@ import ProductContext from '../../context/productContext';
 const Payment = () => {
   const productContext = useContext(ProductContext);
 
-  const { total } = productContext;
+  const { total, fatura, changePaymentMethod } = productContext;
+
+  const onChange = (e) => {
+    changePaymentMethod(e.target.value);
+  };
+
+  const onSubmit = (e) => {
+    e.preventDefault();
+    console.log(fatura);
+  };
 
   return (
     <div className="container">
@@ -13,7 +22,7 @@ const Payment = () => {
       <h3 className="mb-4">
         Total a pagar: <span>{total}€</span>
       </h3>
-      <form>
+      <form onSubmit={onSubmit}>
         <div className="form-group row">
           <label htmlFor="metodoPagamento" className="col-sm-2 col-form-label">
             Metodo Pagamento
@@ -23,6 +32,7 @@ const Payment = () => {
               className="custom-select mr-sm-2"
               id="metodoPagamento"
               placeholder="Escolha um..."
+              onChange={onChange}
             >
               <option value="dinheiro">Dinheiro</option>
               <option value="mbway">Mbway</option>
@@ -33,7 +43,7 @@ const Payment = () => {
 
         <div className="form-group row ">
           <div className="col-sm-10 mt-3">
-            <button type="button" className="btn btn-primary">
+            <button type="submit" className="btn btn-primary">
               Confirmar pagamento
             </button>
           </div>

@@ -1,6 +1,11 @@
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+
+import ProductContext from '../../context/productContext';
 
 const Checkout = (props) => {
+  const productContext = useContext(ProductContext);
+  const { buildFatura } = productContext;
+
   const [fatura, setFatura] = useState({
     nome: '',
     telefone: '',
@@ -10,7 +15,6 @@ const Checkout = (props) => {
     cidade: '',
     nif: '',
     tipoEntrega: 'entregaEmCasa',
-    metodoPagamento: 'dinheiro',
   });
 
   const {
@@ -30,7 +34,7 @@ const Checkout = (props) => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(fatura);
+    buildFatura(fatura);
     props.history.push('/payment');
   };
 
