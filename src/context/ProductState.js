@@ -3,9 +3,6 @@ import axios from 'axios';
 import ProductContext from './productContext';
 import productReducer from './productReducer';
 
-const flatted = require('flatted');
-//import productsList from '../assets/products.json';
-
 const ProductState = (props) => {
   const initialState = {
     products: null,
@@ -25,25 +22,6 @@ const ProductState = (props) => {
         type: 'GET_PRODUCTS',
         payload: res.data,
       });
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const getImage = async (link) => {
-    try {
-      const res = await axios.post('/api/getImage', { link });
-
-      const img = flatted.parse(res.data);
-
-      console.log(link);
-      console.log(img.data);
-      return await img.data;
-      /*
-      dispatch({
-        type: 'GET_IMAGE',
-        payload: res.data,
-      });*/
     } catch (err) {
       console.log(err);
     }
@@ -93,7 +71,6 @@ const ProductState = (props) => {
         removeProduct,
         clearCart,
         totalToPay,
-        getImage,
       }}
     >
       {props.children}

@@ -7,7 +7,7 @@ import ProductContext from '../../context/productContext';
 function Products() {
   const productContext = useContext(ProductContext);
 
-  const { products, addToCart, getProducts, getImage } = productContext;
+  const { products, addToCart, getProducts } = productContext;
 
   useEffect(() => {
     getProducts();
@@ -20,12 +20,7 @@ function Products() {
       <div className="row">
         {products !== null && products.length > 0 ? (
           products.map((product) => (
-            <Product
-              key={product.id}
-              product={product}
-              addToCart={addToCart}
-              getImage={getImage}
-            />
+            <Product key={product.id} product={product} addToCart={addToCart} />
           ))
         ) : (
           <Spinner />
