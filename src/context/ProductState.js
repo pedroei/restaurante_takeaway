@@ -66,6 +66,7 @@ const ProductState = (props) => {
       type: 'SET_FATURA',
       payload: fatura,
     });
+    addProductsToFatura();
   };
 
   //Change Payment
@@ -73,6 +74,13 @@ const ProductState = (props) => {
     dispatch({
       type: 'CHANGE_PAYMENT',
       payload: payment,
+    });
+  };
+
+  //Change Payment
+  const addProductsToFatura = () => {
+    dispatch({
+      type: 'ADD_PRODS_FATURA',
     });
   };
 
@@ -91,6 +99,7 @@ const ProductState = (props) => {
         totalToPay,
         buildFatura,
         changePaymentMethod,
+        addProductsToFatura,
       }}
     >
       {props.children}
