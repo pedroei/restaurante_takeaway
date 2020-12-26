@@ -47,7 +47,7 @@ const reducer = (state, action) => {
             .map((p) => {
               return {
                 id: p.id,
-                price: p.price,
+                unitPrice: p.price,
                 quantity: p.quantity,
               };
             })
@@ -58,7 +58,7 @@ const reducer = (state, action) => {
                 });
               if (found) {
                 found.quantity++;
-                found.price += cur.price;
+                //found.price += cur.price; //Calculates the total price
               } else accumulator.push(cur);
               return accumulator;
             }, []),
