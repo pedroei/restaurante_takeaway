@@ -21,8 +21,11 @@ function Cart() {
         <div className="container my-3">
           <div className="row">
             <div className="col text-center">
-              <button className="btn btn-warning mr-5" onClick={clearCart}>
-                Clear Cart
+              <button
+                className="btn btn-warning mr-5 text-white"
+                onClick={clearCart}
+              >
+                Limpar carrinho
               </button>
 
               <Link className="btn btn-success" to="/checkout">
