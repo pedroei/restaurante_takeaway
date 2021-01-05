@@ -84,6 +84,26 @@ const ProductState = (props) => {
     });
   };
 
+  //Get products
+  const postFatura = async (fatura) => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    try {
+      /*const res = */ await axios.post('/api/webOrder', fatura, config);
+
+      // dispatch({
+      //   type: 'GET_PRODUCTS',
+      //   payload: res.data,
+      // });
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <ProductContext.Provider
       value={{
@@ -100,6 +120,7 @@ const ProductState = (props) => {
         buildFatura,
         changePaymentMethod,
         addProductsToFatura,
+        postFatura,
       }}
     >
       {props.children}

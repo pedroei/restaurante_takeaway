@@ -5,7 +5,7 @@ import ProductContext from '../../context/productContext';
 const Payment = () => {
   const productContext = useContext(ProductContext);
 
-  const { total, fatura, changePaymentMethod } = productContext;
+  const { total, fatura, changePaymentMethod, postFatura } = productContext;
 
   const onChange = (e) => {
     changePaymentMethod(e.target.value);
@@ -13,7 +13,8 @@ const Payment = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log(fatura);
+    //console.log(fatura);
+    postFatura(fatura);
   };
 
   return (
