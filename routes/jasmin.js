@@ -1,14 +1,14 @@
-const { json } = require('express');
-const express = require('express');
+const { json } = require("express");
+const express = require("express");
 const router = express.Router();
-const request = require('request');
-const axios = require('axios');
-const controller = require('../controllers/controller');
+const request = require("request");
+const axios = require("axios");
+const controller = require("../controllers/controller");
 
-router.get('/produtos', async (req, res) => {
+router.get("/produtos", async (req, res) => {
   try {
     const url =
-      'https://my.jasminsoftware.com/api/242895/242895-0001/materialsCore/materialsItems/';
+      "https://my.jasminsoftware.com/api/242895/242895-0001/materialsCore/materialsItems/";
     const token = await controller.getToken();
     //console.log(token);
     let produtos = await axios.get(url, {
@@ -35,26 +35,26 @@ router.get('/produtos', async (req, res) => {
   }
 });
 
-router.post('/createClient', async (req, res) => {
+router.post("/createClient", async (req, res) => {
   const c = await controller.existsClient();
   //const c = await controller.createCient();
   console.log(c);
   res.json(c);
 });
 
-router.post('/createInvoice', async (req, res) => {
+router.post("/createInvoice", async (req, res) => {
   try {
     const url =
-      'https://my.jasminsoftware.com/api/242895/242895-0001/billing/invoices';
+      "https://my.jasminsoftware.com/api/242895/242895-0001/billing/invoices";
     const token = await controller.getToken();
 
     let invoice = await axios.post(
       url,
       {
-        buyerCustomerParty: '0001',
+        buyerCustomerParty: "0001",
         documentLines: [
           {
-            salesItem: '0001',
+            salesItem: "0001",
             unitPrice: {
               amount: 0.4187,
             },
@@ -74,15 +74,19 @@ router.post('/createInvoice', async (req, res) => {
   }
 });
 
-router.post('/webOrder', async (req, res) => {
+router.post("/webOrder", async (req, res) => {
+  //console.log(req.body);
+  try {
+    const t = await controller.existsClient(req.body);
+    console.log(t);
+    res.json(t);
+  } catch (error) {
+    console.log(error);
+  }
+});
+router.post("/bizagiOrder", async (req, res) => {
   console.log(req.body);
-  // try {
-  //   const t = await controller.createCient();
-
-  //   res.json(t);
-  // } catch (error) {
-  //   console.log(error);
-  // }
+  res.send("ok");
 });
 
 module.exports = router;

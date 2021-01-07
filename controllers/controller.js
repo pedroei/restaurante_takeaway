@@ -36,36 +36,34 @@ function getToken() {
 }
 
 //Criar Cliente
-async function createCient() {
+async function createCient(client) {
   try {
     const url =
       "https://my.jasminsoftware.com/api/242895/242895-0001/salesCore/customerParties";
     const token = await getToken();
-
-    let cl = await axios.post(
-      url,
-      {
-        name: "teste",
-        isExternalManaged: false,
-        currency: "EUR",
-        isPerson: true,
-        country: "PT",
-        companyTaxId: 249667142,
-        mobile: 932276650,
-        streetName: "teste",
-        buildingNumber: "405",
-        postalZone: "4900-380",
-        cityName: "Vila-Verde",
+    // console.log(client);
+    const t = {
+      name: client.nome,
+      isExternalManaged: false,
+      currency: "EUR",
+      isPerson: true,
+      country: "PT",
+      companyTaxId: parseInt(client.nif),
+      mobile: parseInt(client.telefone),
+      streetName: client.nomeRua,
+      buildingNumber: client.numPorta,
+      postalZone: client.codPostal,
+      cityName: client.cidade,
+    };
+    console.log(t);
+    let cl = await axios.post(url, t, {
+      headers: {
+        Authorization: `Bearer ${token.access_token}`,
+        "Content-Type": "application/json",
       },
-      {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-          "Content-Type": "application/json",
-        },
-        json: true,
-      }
-    );
-    //console.log(cl);
+      json: true,
+    });
+    //  console.log(cl);
     return cl.data;
   } catch (error) {
     console.log(error.message);
@@ -73,7 +71,7 @@ async function createCient() {
 }
 
 //Verifica se aquele nif já existe nos clientes
-async function existsClient() {
+async function existsClient(cle) {
   try {
     let nif = "249667142";
     const url = `https://my.jasminsoftware.com/api/242895/242895-0001/salesCore/customerParties`;
@@ -94,7 +92,7 @@ async function existsClient() {
       };
     });
 
-    let ct = cl.filter((ci) => ci.companyTaxId === nif);
+    let ct = cl.filter((ci) => ci.companyTaxId === cle.nif);
     return ct;
   } catch (error) {
     console.log(error.message);
