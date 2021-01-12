@@ -9,6 +9,10 @@ router.get("/produtos", async (req, res) => {
   try {
     const url =
       "https://my.jasminsoftware.com/api/242895/242895-0001/materialsCore/materialsItems/";
+
+    const urlpreco =
+      "https://my.jasminsoftware.com/api/242895/242895-0001/salescore/salesitems";
+
     const token = await controller.getToken();
     //console.log(token);
     let produtos = await axios.get(url, {
@@ -16,19 +20,30 @@ router.get("/produtos", async (req, res) => {
         Authorization: `Bearer ${token.access_token}`,
       },
     });
-
-    const pt = produtos.data.map((p) => {
-      return {
-        name: p.description,
-        id: p.itemKey,
-        description: p.complementaryDescription,
-        image: p.image,
-        imageThumbnail: p.imageThumbnail,
-        price: p.materialsItemWarehouses[0].calculatedUnitCost.amount,
-        stock: p.materialsItemWarehouses[0].stockBalance,
-      };
+    let produtospreco = await axios.get(urlpreco, {
+      headers: {
+        Authorization: `Bearer ${token.access_token}`,
+      },
     });
-    //console.log(pt);
+
+    let pt = [];
+
+    produtospreco.data.forEach((prod) => {
+      produtos.data.forEach((p) => {
+        if (prod.itemKey === p.itemKey) {
+          pt.push({
+            name: p.description,
+            id: p.itemKey,
+            description: p.complementaryDescription,
+            image: p.image,
+            imageThumbnail: p.imageThumbnail,
+            price: prod.priceListLines[0].priceAmount.amount,
+            stock: p.materialsItemWarehouses[0].stockBalance,
+          });
+        }
+      });
+    });
+    console.log(pt);
     res.json(pt);
   } catch (error) {
     console.log(error.message);
@@ -52,11 +67,13 @@ router.post("/createInvoice", async (req, res) => {
       url,
       {
         buyerCustomerParty: "0001",
+        emailTo: "clr@ipvc.pt",
         documentLines: [
           {
             salesItem: "0001",
+            quantity: 2,
             unitPrice: {
-              amount: 0.4187,
+              amount: 10,
             },
           },
         ],
@@ -85,18 +102,12 @@ router.post("/webOrder", async (req, res) => {
   }
 });
 router.post("/bizagiOrder", async (req, res) => {
-  console.log(req.body);
+  //console.log(req.body);
+  let { nif, nome, products, telefone, email } = req.body.dados;
+  if (!req.body.dados.nif) {
+    nif = "INDIF";
+  }
   res.send("ok");
 });
 
 module.exports = router;
-/* buyerCustomerParty: "0011",
-        documentLines: [
-          {
-            salesItem: "0015",
-            quantity: 2,
-            unitPrice: {
-              amount: 20,
-            },
-          },
-        ],*/
