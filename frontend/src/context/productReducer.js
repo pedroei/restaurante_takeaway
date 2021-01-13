@@ -23,9 +23,13 @@ const reducer = (state, action) => {
     case 'TOTAL_PAY':
       return {
         ...state,
-        total: state.cart
-          .map((prod) => prod.price)
-          .reduce((acc, curr) => acc + curr),
+        total:
+          state.cart.length === 0
+            ? 0
+            : state.cart
+                .map((prod) => prod.price)
+                .reduce((acc, curr) => acc + curr)
+                .toFixed(2), // fix the number to 2 cases after 0.
       };
     case 'SET_FATURA':
       return {
