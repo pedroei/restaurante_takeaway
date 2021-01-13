@@ -103,11 +103,32 @@ router.post("/webOrder", async (req, res) => {
 });
 router.post("/bizagiOrder", async (req, res) => {
   //console.log(req.body);
-  let { nif, nome, products, telefone, email } = req.body.dados;
-  if (!req.body.dados.nif) {
-    nif = "INDIF";
+  try {
+    let { products } = req.body.dados;
+    let ec = [];
+    let nif = null;
+    if (!req.body.dados.nif) {
+      ec.push({ partyKey: "INDIF" });
+    } else {
+      ec = await controller.existsClient(req.body.dados.nif);
+      if (ec.length === 0) {
+        const crc = await controller.createCient(req.body.dados);
+        if (crc !== "") {
+          ec = await controller.existsClient(req.body.dados.nif);
+        }
+      }
+    }
+    fatura = await controller.createInvoice(ec, products);
+    console.log(fatura);
+    if (fatura !== "") {
+      res.status(200);
+      res.send("ok");
+    } else {
+      res.status(400);
+      throw new Error();
+    }
+  } catch (error) {
+    console.log(error);
   }
-  res.send("ok");
 });
-
 module.exports = router;

@@ -50,10 +50,16 @@ async function createCient(client) {
       country: "PT",
       companyTaxId: parseInt(client.nif),
       mobile: parseInt(client.telefone),
-      streetName: client.nomeRua,
+      electronicMail: client.email,
+      paymentMethod: "NUM",
+      paymentTerm: "00",
+      paymentTermDescription: "Pronto Pagamento",
+      deliveryTerm: "NA",
+
+      /*streetName: client.nomeRua,
       buildingNumber: client.numPorta,
       postalZone: client.codPostal,
-      cityName: client.cidade,
+      cityName: client.cidade,*/
     };
     console.log(t);
     let cl = await axios.post(url, t, {
@@ -71,9 +77,8 @@ async function createCient(client) {
 }
 
 //Verifica se aquele nif já existe nos clientes
-async function existsClient(cle) {
+async function existsClient(nif) {
   try {
-    let nif = "249667142";
     const url = `https://my.jasminsoftware.com/api/242895/242895-0001/salesCore/customerParties`;
     const token = await getToken();
 
@@ -89,14 +94,53 @@ async function existsClient(cle) {
         name: c.name,
         companyTaxId: c.companyTaxID,
         mobile: c.mobile,
+        email: c.electronicMail,
       };
     });
 
-    let ct = cl.filter((ci) => ci.companyTaxId === cle.nif);
+    let ct = cl.filter((ci) => ci.companyTaxId === nif);
     return ct;
   } catch (error) {
     console.log(error.message);
   }
 }
+async function createInvoice(client, produtos) {
+  try {
+    let pt = produtos.map((p) => {
+      return {
+        salesItem: p.id,
+        quantity: parseInt(p.quantity),
+        unitPrice: {
+          amount: parseFloat(p.unitPrice),
+        },
+      };
+    });
+    console.log(client);
+    const url =
+      "https://my.jasminsoftware.com/api/242895/242895-0001/billing/invoices";
+    const token = await getToken();
 
-module.exports = { getToken, existsClient, createCient };
+    let invoice = await axios.post(
+      url,
+      {
+        buyerCustomerParty: client[0].partyKey,
+        emailTo: client[0].email,
+
+        documentLines: pt,
+        documentType: "FR",
+        financialAccount: "01",
+        isWsCommunicable: true,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token.access_token}`,
+        },
+      }
+    );
+    console.log(invoice.data);
+    return invoice.data;
+  } catch (error) {
+    console.log(error);
+  }
+}
+module.exports = { getToken, existsClient, createCient, createInvoice };
