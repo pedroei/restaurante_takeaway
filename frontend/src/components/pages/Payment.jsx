@@ -13,7 +13,7 @@ const Payment = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    //console.log(fatura);
+    console.log(fatura);
     postFatura(fatura);
   };
 
@@ -35,7 +35,6 @@ const Payment = () => {
               placeholder="Escolha um..."
               onChange={onChange}
             >
-              <option value="dinheiro">Dinheiro</option>
               <option value="mbway">Mbway</option>
               <option value="visa">Visa</option>
             </select>

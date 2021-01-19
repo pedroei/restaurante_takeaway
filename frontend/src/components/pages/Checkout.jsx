@@ -8,6 +8,7 @@ const Checkout = (props) => {
 
   const [fatura, setFatura] = useState({
     nome: '',
+    email: '',
     telefone: '',
     nomeRua: '',
     numPorta: '',
@@ -19,6 +20,7 @@ const Checkout = (props) => {
 
   const {
     nome,
+    email,
     telefone,
     nomeRua,
     numPorta,
@@ -52,6 +54,19 @@ const Checkout = (props) => {
             onChange={onChange}
             className="form-control"
             placeholder="O seu nome..."
+            required
+          />
+        </div>
+        <div className="form-group">
+          <label htmlFor="nome">Email</label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value={email}
+            onChange={onChange}
+            className="form-control"
+            placeholder="O seu email..."
             required
           />
         </div>
