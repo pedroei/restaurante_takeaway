@@ -15,7 +15,7 @@ const Checkout = (props) => {
     codPostal: '',
     cidade: '',
     nif: '',
-    tipoEntrega: 'entregaEmCasa',
+    entregaEmCasa: 'true',
   });
 
   const {
@@ -27,7 +27,7 @@ const Checkout = (props) => {
     codPostal,
     cidade,
     nif,
-    tipoEntrega,
+    entregaEmCasa,
   } = fatura;
 
   const onChange = (e) => {
@@ -151,10 +151,10 @@ const Checkout = (props) => {
           <input
             className="form-check-input"
             type="radio"
-            name="tipoEntrega"
+            name="entregaEmCasa"
             id="entregaEmCasa"
-            value="entregaEmCasa"
-            checked={tipoEntrega === 'entregaEmCasa'}
+            value="true"
+            checked={entregaEmCasa === 'true'}
             onChange={onChange}
           />
           <label className="form-check-label" htmlFor="entregaEmCasa">
@@ -165,10 +165,10 @@ const Checkout = (props) => {
           <input
             className="form-check-input"
             type="radio"
-            name="tipoEntrega"
+            name="entregaEmCasa"
             id="entregaNoRestaurante"
-            value="entregaNoRestaurante"
-            checked={tipoEntrega === 'entregaNoRestaurante'}
+            value="false"
+            checked={entregaEmCasa === 'false'}
             onChange={onChange}
           />
           <label className="form-check-label" htmlFor="entregaNoRestaurante">

@@ -1,17 +1,17 @@
-const { json } = require("express");
-const express = require("express");
+const { json } = require('express');
+const express = require('express');
 const router = express.Router();
-const request = require("request");
-const axios = require("axios");
-const controller = require("../controllers/controller");
+const request = require('request');
+const axios = require('axios');
+const controller = require('../controllers/controller');
 
-router.get("/produtos", async (req, res) => {
+router.get('/produtos', async (req, res) => {
   try {
     const url =
-      "https://my.jasminsoftware.com/api/242895/242895-0001/materialsCore/materialsItems/";
+      'https://my.jasminsoftware.com/api/242895/242895-0001/materialsCore/materialsItems/';
 
     const urlpreco =
-      "https://my.jasminsoftware.com/api/242895/242895-0001/salescore/salesitems";
+      'https://my.jasminsoftware.com/api/242895/242895-0001/salescore/salesitems';
 
     const token = await controller.getToken();
     //console.log(token);
@@ -43,86 +43,106 @@ router.get("/produtos", async (req, res) => {
         }
       });
     });
-    console.log(pt);
+    //console.log(pt);
     res.json(pt);
   } catch (error) {
     console.log(error.message);
   }
 });
 
-router.post("/createClient", async (req, res) => {
-  const c = await controller.existsClient();
-  //const c = await controller.createCient();
-  console.log(c);
-  res.json(c);
-});
-
-router.post("/createInvoice", async (req, res) => {
-  try {
-    const url =
-      "https://my.jasminsoftware.com/api/242895/242895-0001/billing/invoices";
-    const token = await controller.getToken();
-
-    let invoice = await axios.post(
-      url,
-      {
-        buyerCustomerParty: "0001",
-        emailTo: "clr@ipvc.pt",
-        documentLines: [
-          {
-            salesItem: "0001",
-            quantity: 2,
-            unitPrice: {
-              amount: 10,
-            },
-          },
-        ],
-      },
-      {
-        headers: {
-          Authorization: `Bearer ${token.access_token}`,
-        },
-      }
-    );
-    console.log(invoice.data);
-    res.json(invoice.data);
-  } catch (error) {
-    console.log(error);
-  }
-});
-
-router.post("/webOrder", async (req, res) => {
+router.post('/webOrder', async (req, res) => {
   //console.log(req.body);
   try {
-    const t = await controller.existsClient(req.body);
+    const t = req.body;
     console.log(t);
-    res.json(t);
+    let cliente = ';';
+    if (req.body.nif == '') {
+      cliente = `<comNif>false</comNif>`;
+    } else {
+      cliente = `<comNif>true</comNif>
+      <Cliente>
+          <contacto>'${req.body.telefone}'</contacto>
+          <email>'${req.body.email}</email>
+          <nome>'${req.body.nome}</nome>
+          <nif>'${req.body.nif}</nif>
+        </Cliente>`;
+    }
+
+    let produtos = '';
+    req.body.products.forEach((p) => {
+      produtos += `<produtosWeb>
+      <idProduto>'${p.id}'</idProduto>
+      <qtdWeb>'${p.quantity}'</qtdWeb>
+    </produtosWeb>`;
+    });
+
+    var qs = require('qs');
+    var data = qs.stringify({
+      casesInfo: `<BizAgiWSParam>        
+       <domain>domain</domain>        
+       <userName>admon</userName>        
+       <Cases>            
+       <Case>                
+       <Process>TakEatAway</Process>                
+       <Entities>                    
+       <TakEatAway>
+        '${cliente}'
+        <entregaEmCasa>'${req.body.entregaEmCasa}'</entregaEmCasa>
+        <produtosWeb>
+        '${produtos}
+        </produtosWeb>
+      </TakEatAway>         
+       </Entities>            
+       </Case>        
+       </Cases>    
+       </BizAgiWSParam>`,
+    });
+    var config = {
+      method: 'post',
+      url:
+        'http://localhost:10024/TakEatAway/WebServices/WorkflowEngineSOA.asmx/createCasesAsString',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Cookie:
+          'loginOptions=loginOption=alwaysAsk&userName=admon&domain=domain&expires=2/6/2021%203:07:09%20PM',
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+    //res.json(t);*/
   } catch (error) {
     console.log(error);
   }
 });
-router.post("/bizagiOrder", async (req, res) => {
+router.post('/bizagiOrder', async (req, res) => {
   //console.log(req.body);
   try {
     let { products } = req.body.dados;
     let ec = [];
     let nif = null;
     if (!req.body.dados.nif) {
-      ec.push({ partyKey: "INDIF" });
+      ec.push({ partyKey: 'INDIF' });
     } else {
       ec = await controller.existsClient(req.body.dados.nif);
       if (ec.length === 0) {
         const crc = await controller.createCient(req.body.dados);
-        if (crc !== "") {
+        if (crc !== '') {
           ec = await controller.existsClient(req.body.dados.nif);
         }
       }
     }
     fatura = await controller.createInvoice(ec, products);
     console.log(fatura);
-    if (fatura !== "") {
+    if (fatura !== '') {
       res.status(200);
-      res.send("ok");
+      res.send('ok');
     } else {
       res.status(400);
       throw new Error();
