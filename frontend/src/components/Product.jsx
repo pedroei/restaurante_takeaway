@@ -28,21 +28,34 @@ const Product = ({ product, addToCart, removeProduct }) => {
           <h4 className="card-text">{product.price}€</h4>
           <p className="card-text">Stock: {localStock}</p>
         </div>
-        <div className="card-footer bg-white">
-          {addToCart && (
-            <button className="btn btn-success" onClick={handleAdd}>
-              Adicionar ao carrinho
-            </button>
-          )}
-          {removeProduct && (
-            <button
-              className="btn btn-danger"
-              onClick={() => removeProduct(product)}
-            >
-              Remover
-            </button>
-          )}
-        </div>
+        {!outOfStock && (
+          <div className="card-footer bg-white">
+            {addToCart && (
+              <button className="btn btn-success" onClick={handleAdd}>
+                Adicionar ao carrinho
+              </button>
+            )}
+            {removeProduct && (
+              <button
+                className="btn btn-danger"
+                onClick={() => removeProduct(product)}
+              >
+                Remover
+              </button>
+            )}
+          </div>
+        )}
+        {outOfStock && (
+          <div className="card-footer bg-white">
+            {addToCart && (
+              <div>
+                <span>
+                  <strong className="text-danger">Sem stock</strong>
+                </span>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </div>
   );
