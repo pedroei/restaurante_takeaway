@@ -31,7 +31,7 @@ function getToken() {
     // Only `delay` is able to resolve or reject the promise
     setTimeout(function () {
       resolve(token); // After 3 seconds, resolve the promise with value 42
-    }, 2000);
+    }, 3000);
   });
 }
 
@@ -98,7 +98,7 @@ async function existsClient(nif) {
       };
     });
 
-    let ct = cl.filter((ci) => ci.companyTaxId === nif);
+    let ct = cl.filter((ci) => parseInt(ci.companyTaxId) === nif);
     return ct;
   } catch (error) {
     console.log(error.message);
@@ -106,14 +106,17 @@ async function existsClient(nif) {
 }
 async function createInvoice(client, produtos) {
   try {
-    let pt = produtos.map((p) => {
-      return {
-        salesItem: p.id,
-        quantity: parseInt(p.quantity),
-        unitPrice: {
-          amount: parseFloat(p.unitPrice),
-        },
-      };
+    let pt = [];
+    produtos.forEach((p) => {
+      if (parseInt(p.quantity) > 0) {
+        pt.push({
+          salesItem: p.id,
+          quantity: parseInt(p.quantity),
+          unitPrice: {
+            amount: parseFloat(p.unitPrice),
+          },
+        });
+      }
     });
     console.log(client);
     const url =
@@ -129,6 +132,7 @@ async function createInvoice(client, produtos) {
         documentLines: pt,
         documentType: 'FR',
         financialAccount: '01',
+        isWsCommunicable: true,
       },
       {
         headers: {

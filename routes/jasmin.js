@@ -57,45 +57,47 @@ router.post('/webOrder', async (req, res) => {
     console.log(t);
     let cliente = ';';
     if (req.body.nif == '') {
-      cliente = `<comNif>false</comNif>`;
+      cliente = `<comNif>false</comNif>\n`;
     } else {
-      cliente = `<comNif>true</comNif>
-      <Cliente>
-          <contacto>'${req.body.telefone}'</contacto>
-          <email>'${req.body.email}</email>
-          <nome>'${req.body.nome}</nome>
-          <nif>'${req.body.nif}</nif>
-        </Cliente>`;
+      cliente = `
+      <comNif>true</comNif>\n  
+      <Cliente>\n    
+      <contacto>${req.body.telefone}</contacto>\n    
+      <email>${req.body.email}</email>\n    
+      <nome>${req.body.nome}</nome>\n    
+      <nif>${req.body.nif}</nif>\n  
+      </Cliente>\n  `;
     }
 
     let produtos = '';
     req.body.products.forEach((p) => {
-      produtos += `<produtosWeb>
-      <idProduto>'${p.id}'</idProduto>
-      <qtdWeb>'${p.quantity}'</qtdWeb>
-    </produtosWeb>`;
+      produtos += `
+    <produtosWeb>\n      
+      <idProduto>${p.id}</idProduto>\n      
+      <qtdWeb>${p.quantity}</qtdWeb>\n    
+      </produtosWeb>\n  `;
     });
 
     var qs = require('qs');
     var data = qs.stringify({
-      casesInfo: `<BizAgiWSParam>        
-       <domain>domain</domain>        
-       <userName>admon</userName>        
-       <Cases>            
-       <Case>                
-       <Process>TakEatAway</Process>                
-       <Entities>                    
-       <TakEatAway>
-        '${cliente}'
-        <entregaEmCasa>'${req.body.entregaEmCasa}'</entregaEmCasa>
-        <produtosWeb>
-        '${produtos}
-        </produtosWeb>
-      </TakEatAway>         
-       </Entities>            
-       </Case>        
-       </Cases>    
-       </BizAgiWSParam>`,
+      casesInfo: `<BizAgiWSParam>        \n 
+      <domain>domain</domain>        \n 
+      <userName>Caixa</userName>        \n 
+      <Cases>            \n 
+      <Case>                \n 
+      <Process>TakEatAway</Process>                \n 
+      <Entities>                    \n 
+      <TakEatAway>\n  
+      ${cliente}  
+      <entregaEmCasa>true</entregaEmCasa>\n  
+      <produtosWeb>\n    
+      ${produtos} 
+      </produtosWeb>\n
+      </TakEatAway>         \n 
+      </Entities>            \n 
+      </Case>        \n 
+      </Cases>    \n 
+      </BizAgiWSParam>`,
     });
     var config = {
       method: 'post',
@@ -142,7 +144,7 @@ router.post('/bizagiOrder', async (req, res) => {
     console.log(fatura);
     if (fatura !== '') {
       res.status(200);
-      res.send('ok');
+      res.json({ idFaturaJasmin: fatura });
     } else {
       res.status(400);
       throw new Error();
