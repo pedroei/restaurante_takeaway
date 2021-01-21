@@ -10,6 +10,7 @@ const ProductState = (props) => {
     total: 0,
     fatura: null,
     error: null,
+    finalMessage: '',
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
@@ -84,7 +85,7 @@ const ProductState = (props) => {
     });
   };
 
-  //Get products
+  //Create case in Bizagi
   const postFatura = async (fatura) => {
     const config = {
       headers: {
@@ -93,15 +94,17 @@ const ProductState = (props) => {
     };
 
     try {
-      /*const res = */ await axios.post('/api/webOrder', fatura, config);
+      await axios.post('/api/webOrder', fatura, config);
 
-      // dispatch({
-      //   type: 'GET_PRODUCTS',
-      //   payload: res.data,
-      // });
+      dispatch({ type: 'CLEAR_ALL' });
     } catch (err) {
       console.log(err);
     }
+  };
+
+  // Clear message
+  const clearMessage = () => {
+    dispatch({ type: 'CLEAR_MESSAGE' });
   };
 
   return (
@@ -112,6 +115,7 @@ const ProductState = (props) => {
         total: state.total,
         fatura: state.fatura,
         error: state.error,
+        finalMessage: state.finalMessage,
         getProducts,
         addToCart,
         removeProduct,
@@ -121,6 +125,7 @@ const ProductState = (props) => {
         changePaymentMethod,
         addProductsToFatura,
         postFatura,
+        clearMessage,
       }}
     >
       {props.children}

@@ -2,7 +2,7 @@ import { useContext } from 'react';
 
 import ProductContext from '../../context/productContext';
 
-const Payment = () => {
+const Payment = ({ history }) => {
   const productContext = useContext(ProductContext);
 
   const { total, fatura, changePaymentMethod, postFatura } = productContext;
@@ -15,6 +15,7 @@ const Payment = () => {
     e.preventDefault();
     console.log(fatura);
     postFatura(fatura);
+    history.push('/');
   };
 
   return (

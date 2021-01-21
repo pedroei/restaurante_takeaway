@@ -68,6 +68,21 @@ const reducer = (state, action) => {
             }, []),
         },
       };
+    case 'CLEAR_MESSAGE':
+      return {
+        ...state,
+        finalMessage: '',
+      };
+    case 'CLEAR_ALL':
+      return {
+        ...state,
+        products: null,
+        cart: [],
+        total: 0,
+        fatura: null,
+        error: null,
+        finalMessage: 'Compra concluida, aguarde a fatura...',
+      };
     default:
       return state;
   }
