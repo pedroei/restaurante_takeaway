@@ -11,6 +11,7 @@ const ProductState = (props) => {
     fatura: null,
     error: null,
     finalMessage: '',
+    finished: false
   };
 
   const [state, dispatch] = useReducer(productReducer, initialState);
@@ -94,9 +95,13 @@ const ProductState = (props) => {
     };
 
     try {
-      await axios.post('/api/webOrder', fatura, config);
+      dispatch({ type: 'FINISHED' });
+      const res = await axios.post('/api/webOrder', fatura, config);
+  
+      if(res.data.msg === 'ok'){
+        dispatch({ type: 'CLEAR_ALL' });
+      }
 
-      dispatch({ type: 'CLEAR_ALL' });
     } catch (err) {
       console.log(err);
     }
@@ -116,6 +121,7 @@ const ProductState = (props) => {
         fatura: state.fatura,
         error: state.error,
         finalMessage: state.finalMessage,
+        finished: state.finished,
         getProducts,
         addToCart,
         removeProduct,

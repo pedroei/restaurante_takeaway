@@ -76,13 +76,19 @@ const reducer = (state, action) => {
     case 'CLEAR_ALL':
       return {
         ...state,
-        products: null,
+        // products: null,
         cart: [],
+        finished: false,
         total: 0,
         fatura: null,
         error: null,
         finalMessage: 'Compra concluida, aguarde a fatura...',
       };
+    case 'FINISHED':
+      return {
+        ...state,
+          finished: true
+      }
     default:
       return state;
   }

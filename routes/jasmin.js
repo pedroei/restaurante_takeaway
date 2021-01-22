@@ -102,7 +102,7 @@ router.post('/webOrder', async (req, res) => {
     var config = {
       method: 'post',
       url:
-        'http://localhost:10024/TakEatAway/WebServices/WorkflowEngineSOA.asmx/createCasesAsString',
+        'http://desktop-mc7npsb/TakEatAway/WebServices/WorkflowEngineSOA.asmx/createCasesAsString',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
         Cookie:
@@ -114,22 +114,25 @@ router.post('/webOrder', async (req, res) => {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-      })
+        res.json({"msg":'ok'});
+        })
       .catch(function (error) {
         console.log(error);
+        res.json({"msg":error});
       });
     //res.json(t);*/
   } catch (error) {
     console.log(error);
+    res.json({"msg":error});
   }
 });
 router.post('/bizagiOrder', async (req, res) => {
-  //console.log(req.body);
-  try {
+  console.log(req.body);
+   try {
     let { products } = req.body.dados;
     let ec = [];
     let nif = null;
-    if (!req.body.dados.nif) {
+    if (!req.body.dados.comNif) {
       ec.push({ partyKey: 'INDIF' });
     } else {
       ec = await controller.existsClient(req.body.dados.nif);
@@ -151,6 +154,6 @@ router.post('/bizagiOrder', async (req, res) => {
     }
   } catch (error) {
     console.log(error);
-  }
+  } 
 });
 module.exports = router;

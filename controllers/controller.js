@@ -127,7 +127,7 @@ async function createInvoice(client, produtos) {
       url,
       {
         buyerCustomerParty: client[0].partyKey,
-        emailTo: client[0].email,
+       // emailTo: client[0].email,
 
         documentLines: pt,
         documentType: 'FR',

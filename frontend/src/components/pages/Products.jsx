@@ -13,6 +13,7 @@ function Products() {
     getProducts,
     finalMessage,
     clearMessage,
+    finished
   } = productContext;
 
   useEffect(() => {
@@ -24,17 +25,19 @@ function Products() {
   //   clearMessage();
   // }, 3000);
 
+  if(finished) return <Spinner/>
+
   return (
     <div className="container mb-2">
       {finalMessage && (
         <div
-          class="alert alert-success alert-dismissible fade show mt-3"
+          className="alert alert-success alert-dismissible fade show mt-3"
           role="alert"
         >
-          <h4 class="alert-heading">Sucesso!</h4>
+          <h4 className="alert-heading">Sucesso!</h4>
           <button
             type="button"
-            class="close"
+            className="close"
             data-dismiss="alert"
             aria-label="Close"
           >

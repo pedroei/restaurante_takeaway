@@ -1,11 +1,12 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 
 import ProductContext from '../../context/productContext';
+import Spinner from '../layout/Spinner';
 
 const Payment = ({ history }) => {
   const productContext = useContext(ProductContext);
 
-  const { total, fatura, changePaymentMethod, postFatura } = productContext;
+  const { total, fatura, changePaymentMethod, postFatura, finished } = productContext;
 
   const onChange = (e) => {
     changePaymentMethod(e.target.value);
